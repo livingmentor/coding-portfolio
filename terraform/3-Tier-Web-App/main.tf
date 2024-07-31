@@ -31,7 +31,7 @@ resource "aws_nat_gateway" "main" {
 }
 
 resource "aws_eip" "main" {
-  vpc = true
+  domain = "vpc"
 }
 
 resource "aws_route_table" "public" {
@@ -159,9 +159,7 @@ resource "aws_lb_listener" "https" {
   protocol          = "HTTPS"
 
   ssl_policy = "ELBSecurityPolicy-2016-08"
-  certificate_arn = "arn:aws:acm:region:account-id:certificate/certificate-id"
-
-  default_action {
+    default_action {
     type = "forward"
     target_group_arn = aws_lb_target_group.main.arn
   }
@@ -230,7 +228,7 @@ resource "aws_db_instance" "db" {
   engine               = "mysql"
   engine_version       = "8.0"
   instance_class       = "db.t2.micro"
-  name                 = "mydatabase"
+  db_name              = "mydatabase"
   username             = "admin"
   password             = "password"
   parameter_group_name = "default.mysql8.0"
